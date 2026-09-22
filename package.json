@@ -10,8 +10,20 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@deck.gl-community/leaflet": "^9.4.1",
+    "@deck.gl/core": "^9.4.0",
+    "@deck.gl/geo-layers": "^9.4.0",
+    "@deck.gl/layers": "^9.4.0",
+    "axios": "^1.20.0",
+    "deck.gl": "^9.1.0",
+    "leaflet": "^1.9.4",
+    "leaflet-draw": "^1.0.4",
     "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "react-dom": "^19.2.8",
+    "react-leaflet": "^5.0.0",
+    "react-leaflet-draw": "^0.21.0",
+    "react-router-dom": "^7.18.4",
+    "recharts": "^3.10.1"
   },
   "devDependencies": {
     "@types/react": "^19.2.18",
