@@ -55,10 +55,13 @@ return (
     </section>
 
     <div className="landing-cta">
-      <button className="start-btn" onClick={() => navigate('/select')}>
-        Select an area
-      </button>
-    </div>
+  <button className="start-btn" onClick={() => navigate('/select')}>
+    Select an area
+  </button>
+  <button className="demo-btn" onClick={() => navigate('/simulation/demo')}>
+    View a sample simulation
+  </button>
+</div>
   </div>
 );
 }
