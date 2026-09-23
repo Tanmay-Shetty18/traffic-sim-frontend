@@ -14,11 +14,29 @@ export default function HomePage() {
 
   return (
     <div>
-      <h1>Traffic-Sim: Select an Area</h1>
-      <AreaSelectMap onAreaSelected={setBounds} />
-      <button disabled={!bounds} onClick={handleStart}>
-        Start Simulation
-      </button>
+      <header className="app-header">
+        <div className="app-header__brand">
+          <span className="app-header__dot" />
+          <span className="app-header__title">Traffic-Sim</span>
+        </div>
+        <span className="app-header__tagline">India-calibrated road network simulation</span>
+      </header>
+
+      <div className="map-shell">
+        <div className="map-card">
+          <AreaSelectMap onAreaSelected={setBounds} />
+        </div>
+
+        {!bounds && (
+          <p style={{ color: 'var(--text-muted)', fontSize: 14, marginTop: 12 }}>
+            Draw a rectangle or polygon on the map to select your simulation area.
+          </p>
+        )}
+
+        <button className="start-btn" disabled={!bounds} onClick={handleStart}>
+          Start Simulation
+        </button>
+      </div>
     </div>
   );
 }

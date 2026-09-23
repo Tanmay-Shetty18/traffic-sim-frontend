@@ -1,24 +1,46 @@
-import { useState } from 'react';
-import { MapContainer, TileLayer, FeatureGroup } from 'react-leaflet';
-import { EditControl } from 'react-leaflet-draw';
-import 'leaflet-draw/dist/leaflet.draw.css';
+import { useEffect } from 'react';
+import { MapContainer, TileLayer, useMap } from 'react-leaflet';
+import '@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css';
+import '@geoman-io/leaflet-geoman-free';
+
+function DrawControls({ onAreaSelected }) {
+  const map = useMap();
+
+  useEffect(() => {
+    map.pm.addControls({
+      position: 'topright',
+      drawMarker: false,
+      drawCircleMarker: false,
+      drawPolyline: false,
+      drawCircle: false,
+      drawRectangle: true,
+      drawPolygon: true,
+      editMode: true,
+      dragMode: false,
+      removalMode: true,
+    });
+
+    const handleCreate = (e) => {
+      const bounds = e.layer.getBounds();
+      onAreaSelected({
+        north: bounds.getNorth(),
+        south: bounds.getSouth(),
+        east: bounds.getEast(),
+        west: bounds.getWest(),
+      });
+    };
+
+    map.on('pm:create', handleCreate);
+    return () => {
+      map.off('pm:create', handleCreate);
+      map.pm.removeControls();
+    };
+  }, [map]);
+
+  return null;
+}
 
 export default function AreaSelectMap({ onAreaSelected }) {
-  const [bounds, setBounds] = useState(null);
-
-  const handleCreated = (e) => {
-    const layer = e.layer;
-    const b = layer.getBounds();
-    const selected = {
-      north: b.getNorth(),
-      south: b.getSouth(),
-      east: b.getEast(),
-      west: b.getWest(),
-    };
-    setBounds(selected);
-    onAreaSelected(selected);
-  };
-
   return (
     <div style={{ height: '80vh', width: '100%' }}>
       <MapContainer center={[19.076, 72.877]} zoom={12} style={{ height: '100%' }}>
@@ -26,24 +48,8 @@ export default function AreaSelectMap({ onAreaSelected }) {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; OpenStreetMap contributors'
         />
-        <FeatureGroup>
-          <EditControl
-            position="topright"
-            onCreated={handleCreated}
-            draw={{
-              rectangle: true,
-              polygon: true,
-              circle: false,
-              circlemarker: false,
-              marker: false,
-              polyline: false,
-            }}
-          />
-        </FeatureGroup>
+        <DrawControls onAreaSelected={onAreaSelected} />
       </MapContainer>
-      {bounds && (
-        <pre style={{ fontSize: 12 }}>{JSON.stringify(bounds, null, 2)}</pre>
-      )}
     </div>
   );
 }
